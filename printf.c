@@ -9,25 +9,61 @@
  *Return: number of characters printed
  */
 
-int _printf(const char *format, ...)
+int _printf(const char *format, ...) 
 {
+va_list args;
+va_start(args, format);
 
-int main(void)
+int count = 0;
+char ch;
+
+while ((ch = *format++) != '\0') 
 {
-int len;
-int len2;
+if (ch == '%') 
+{
+ch = *format++;
+switch (ch) 
+{
+case 'c': 
+{
+char c = (char) va_arg(args, int);
+putchar(c);
+count++;
+break;
+}
+case 's': 
+{
+char *str = va_arg(args, char *);
+while (*str != '\0') 
+{
+putchar(*str++);
+count++;
+}
+break;
+}
+case '%': 
+{
+putchar('%');
+count++;
+break;
+}
+default: 
+{
+putchar('%');
+putchar(ch);
+count += 2;
+break;
+}
+}
+} 
+else 
+{
+putchar(ch);
+count++;
+}
+}
 
-len = _printf("Let's try to printf a simple sentence.\n");
-len2 = printf("Let's try to printf a simple sentence.\n");
-    
-_printf("Character:[%c]\n", 'H');
-printf("Character:[%c]\n", 'H');
-
-_printf("String:[%s]\n", "I am a string !");
-printf("String:[%s]\n", "I am a string !");
-
-len = _printf("Percent:[%%]\n");
-len2 = printf("Percent:[%%]\n");    
-return (0);
+va_end(args);
+return(count);
 }
 
