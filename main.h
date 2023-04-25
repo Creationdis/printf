@@ -1,10 +1,9 @@
 #ifndef MAIN_H_
 #define MAIN_H_
-#include <stdio.h>
+
 #include <stdarg.h>
+#include <stdio.h>
 #include <unistd.h>
-#include <limits.h>
-#include <stdlib.h>
 
 #define BUFF_SIZE 1024
 
@@ -38,4 +37,4 @@ unsigned int precision;
 unsigned int zero_flag;
 unsigned int minus_flag;
 
-#endif
+#endif/* MAIN_H */
