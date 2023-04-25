@@ -9,7 +9,7 @@
  *Return: number of characters printed
  */
 
-int _printf(const char *format, ...) 
+int _printf(const char *format, ...)
 {
 va_list args;
 va_start(args, format);
@@ -17,37 +17,37 @@ va_start(args, format);
 int count = 0;
 char ch;
 
-while ((ch = *format++) != '\0') 
+while ((ch = *format++) != '\0')
 {
-if (ch == '%') 
+if (ch == '%')
 {
 ch = *format++;
-switch (ch) 
+switch (ch)
 {
-case 'c': 
+case 'c':
 {
 char c = (char) va_arg(args, int);
 putchar(c);
 count++;
 break;
 }
-case 's': 
+case 's':
 {
 char *str = va_arg(args, char *);
-while (*str != '\0') 
+while (*str != '\0')
 {
 putchar(*str++);
 count++;
 }
 break;
 }
-case '%': 
+case '%':
 {
 putchar('%');
 count++;
 break;
 }
-default: 
+default:
 {
 putchar('%');
 putchar(ch);
@@ -55,8 +55,8 @@ count += 2;
 break;
 }
 }
-} 
-else 
+}
+else
 {
 putchar(ch);
 count++;
