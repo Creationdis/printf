@@ -26,5 +26,17 @@ int print_int(va_list args)
 			_putchar(' ');
 	}
 	return (_puts(buffer));
+}
+/**
+ * print_unsigned - prints unsigned integers from a va_list
+ * @list: va_list of unsigned integers to be printed
+ * Return: number of characters printed
+ */
+int print_unsigned(va_list args)
+{
+	unsigned int num = va_arg(args, unsigned int);
+	char buffer[50];
 
+	_itoa(num, buffer);
+	return (_puts(buffer));
 }
