@@ -1,52 +1,25 @@
 #include "main.h"
 #include <stdio.h>
-#include <stdarg.h>
+#include <stdlib.h>
 
 /**
- *_printf - a function that produces output according to a format.
- *@format: A format is a character string.
- *Description: %[flags][width][.precision][length]specifier
- *Return: number of characters printed
+ * _printf - function my printf
+ * @format: string whit format to print
+ * This function prints a formated string to the stdout stream
+ *accepts a format string as its first argument and any additional arguments
+ * Return: number of chars that print
  */
-
 int _printf(const char *format, ...)
 {
-va_list args;
-va_start(args, format);
+	va_list args;
+	int length = 0;
 
-int i = 0;
+	if (format == NULL)
+		return (1);
 
-while (*format != '\0')
-if (*format == '%')
-format++;
-switch (*format)
-{
-case 'c':
-{
-int c = va_arg(args, int);
-putchar(c);
-i++;
-}
-case 's':
-{
-char *s = va_arg(args, char *);
-while (*s != '\0')
-putchar(*s);
-s++;
-i++;
-}
-case '%':
-{
-putchar('%');
-putchar(*format);
-(i += 2);
-}
-{
-putchar(*format);
-i++;
-format++;
-}
-}
-va_end(args);
-return (0);
+	va_start(args, format);
+
+	length = _print_format(format, args);
+	va_end(args);
+	return (length);
 }
