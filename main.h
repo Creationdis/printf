@@ -37,5 +37,6 @@ unsigned int width;
 unsigned int precision;
 unsigned int zero_flag;
 unsigned int minus_flag;
+  
 
-#endif/* MAIN_H */
+#endif /* MAIN_H */
