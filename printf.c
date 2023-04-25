@@ -1,69 +1,58 @@
-#include "main.h"
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 
-/**
- *_printf - a function that produces output according to a format.
- *@format: A format is a character string.
- *Description: %[flags][width][.precision][length]specifier
- *Return: number of characters printed
- */
+int my_printf(const char *format, ...) {
+    va_list args;
+    int count = 0;
 
-int _printf(const char *format, ...)
-{
-va_list args;
-va_start(args, format);
+    if (format == NULL) {
+        return -1;
+    }
 
-int count = 0;
-char ch;
+    va_start(args, format);
 
-while ((ch = *format++) != '\0')
-{
-if (ch == '%')
-{
-ch = *format++;
-switch (ch)
-{
-case 'c':
-{
-char c = (char) va_arg(args, int);
-putchar(c);
-count++;
-break;
-}
-case 's':
-{
-char *str = va_arg(args, char *);
-while (*str != '\0')
-{
-putchar(*str++);
-count++;
-}
-break;
-}
-case '%':
-{
-putchar('%');
-count++;
-break;
-}
-default:
-{
-putchar('%');
-putchar(ch);
-count += 2;
-break;
-}
-}
-}
-else
-{
-putchar(ch);
-count++;
-}
-}
+    for (int i = 0; format[i] != '\0'; i++) {
+        if (format[i] == '%') {
+            if (format[i + 1] == '\0') {
+                return -1;
+            }
+            switch (format[i + 1]) {
+                case 's': {
+                    char *str = va_arg(args, char *);
+                    for (int j = 0; str[j] != '\0'; j++) {
+                        putchar(str[j]);
+                        count++;
+                    }
+                    i++;
+                    break;
+                }
+                case 'c': {
+                    char c = va_arg(args, int);
+                    putchar(c);
+                    count++;
+                    i++;
+                    break;
+                }
+                case '%': {
+                    putchar('%');
+                    count++;
+                    i++;
+                    break;
+                }
+                default: {
+                    putchar(format[i]);
+                    count++;
+                    break;
+                }
+            }
+        } else {
+            putchar(format[i]);
+            count++;
+        }
+    }
 
-va_end(args);
-return(count);
+    va_end(args);
+
+    return count;
 }
 
