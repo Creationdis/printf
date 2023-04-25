@@ -8,9 +8,9 @@
  * @buffer: Buffer array to handle print
  * Return: number of characters printed
  */
-int print_int(va_list args)
+int print_int(va_list list)
  {
-    int value = va_arg(args, int);
+    int value = va_arg(list, int);
     int num = va_arg(list, int);
 	char buffer[50];
 	int len;
@@ -30,11 +30,12 @@ int print_int(va_list args)
 /**
  * print_unsigned - prints unsigned integers from a va_list
  * @list: va_list of unsigned integers to be printed
+ * @buffer: Buffer array to handle print
  * Return: number of characters printed
  */
 int print_unsigned(va_list args)
 {
-	unsigned int num = va_arg(args, unsigned int);
+	unsigned int num = va_arg(list, unsigned int);
 	char buffer[50];
 
 	_itoa(num, buffer);
