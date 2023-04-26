@@ -26,7 +26,7 @@ int print_octal(va_list args);
 int print_hexadecimal(va_list args);
 int print_hexa_upper(va_list args);
 int print_S(va_list args);
-int print_address(va_list args)
+int print_address(va_list args);
 int print_rev(va_list args);
 int print_rot13(va_list args);
 
