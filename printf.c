@@ -7,12 +7,9 @@
  *@format: A format is a character string.
  *Description: %[flags][width][.precision][length]specifier
  *Return: number of characters printed
- */
-#include <stdarg.h>
-#include <stdio.h>
+*/
 
-int _printf(const char *format, ...)
-{
+int _printf(const char *format, ...) {
     va_list args;
     int count = 0;
 
