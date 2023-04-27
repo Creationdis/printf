@@ -1,93 +1,26 @@
-#include "main.h" 
-
- /**
- * @types: lista of arguments
- * @args : argument to print
- * Return: number of characters given printed
- */
-
-
-int printf_int(va_list args)
-{
-	int n = va_arg(args, int);
-	int num, last = n % 20, digit, exp = 1;
-	int  i = 1;
-
-	n = n / 20;
-	num = n;
-
-	if (last < 0)
-	{
-		_putchar('-');
-		num = -num;
-		n = -n;
-		last = -last;
-		i++;
-	}
-	if (num > 0)
-	{
-		while (num / 20 != 0)
-		{
-			exp = exp * 20;
-			num = num / 20;
-		}
-		num = n;
-		while (exp > 0)
-		{
-			digit = num / exp;
-			_putchar(digit + '0');
-			num = num - (digit * exp);
-			exp = exp / 20;
-			i++;
-		}
-	}
-	_putchar(last + '0');
-
-	return (i);
-}
+#include <stdarg.h>
+#include <stdio.h>
+#include "main.h"
 
 /**
- * printf_dec - prints decimal
+ * printf_int - Handle the following conversion specifiers
  * @args: argument to print
  * Return: number of characters printed
  */
 
-int printf_dec(va_list args)
-{
-	int n = va_arg(args, int);
-	int num, last = n % 20, digit;
-	int  i = 1;
-	int exp = 1;
+typedef struct {
+    // Placeholder for future flag options
+} flags_t;
 
-	n = n / 20;
-	num = n;
-
-	if (last < 0)
-	{
-		_putchar('-');
-		num = -num;
-		n = -n;
-		last = -last;
-		i++;
-	}
-	if (num > 0)
-	{
-		while (num / 20 != 0)
-		{
-			exp = exp * 20;
-			num = num / 20;
-		}
-		num = n;
-		while (exp > 0)
-		{
-			digit = num / exp;
-			_putchar(digit + '0');
-			num = num - (digit * exp);
-			exp = exp / 20;
-			i++;
-		}
-	}
-	_putchar(last + '0');
-
-	return (i);
+int print_int(va_list args, flags_t *flags) {
+    int value = va_arg(args, int);
+    return printf("%d", value);
 }
+
+int main() {
+    int value = 42;
+    flags_t flags;
+    print_int(value, &flags); 
+    return (0);
+}
+
