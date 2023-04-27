@@ -1,145 +1,87 @@
 #include "main.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <stddef.h>
-#include <limits.h>
 
 /**
- * _putchar - Writes a character to stdout
- * @c: The character to print
+ * _printf - prints a formatted string to the standard output.
  *
- * Return: 1 if successful, -1 if failed
- */
-int _putchar(char c)
-{
-    return (write(1, &c, 1));
-}
-
-
-/**
- * _printf - Prints a formatted string to stdout
- * @format: The format string
+ * @format: A pointer to a string that contains format specifiers.
  *
- * Return: The number of characters printed
+ * Description:
+ * This function produces output according to a format.
+ * The format string is composed of zero or more directives:
+ * ordinary characters (not %), which are copied unchanged to the output stream;
+ * and conversion specifications, each of which results in fetching zero or more
+ * subsequent arguments. Each conversion specification is introduced by the
+ * % character.
+ *
+ * Return: The number of characters printed (excluding the null byte used to
+ * end output to strings).
+ * If an output error is encountered, a negative value is returned.
  */
 int _printf(const char *format, ...)
 {
-    va_list args;
-    int len = 0;
+	va_list args;
+	const char *p = format;
+	int count = 0;
 
-    if (format == NULL)
-        return (-1);
+	if (format == NULL)
+		return (-1);
 
-    va_start(args, format);
-    len = handle_conversion_specifier(&format, args);
-    va_end(args);
+	va_start(args, format);
 
-    return (len);
+	while (*p != '\0')
+	{
+		if (*p == '%')
+		{
+			int printed = handle_conversion_specifier(&p, args);
+			if (printed < 0)
+				return (-1);
+			count += printed;
+		}
+		else
+		{
+			putchar(*p);
+			count++;
+		}
+		p++;
+	}
+
+	va_end(args);
+
+	return (count);
 }
-
-
 /**
- * handle_conversion_specifier - Handles conversion specifiers in a format string
- * @p: A pointer to a pointer to the current position in the format string
- * @args: The va_list containing the arguments for the format string
+ * handle_conversion_specifier - Handles a conversion specifier.
  *
- * Return: The number of characters printed
+ * @p: A pointer to a pointer to a character in the format string.
+ * @args: A va_list of arguments to print.
+ *
+ * Return: The number of characters printed for this specifier, or -1 on failure.
  */
 int handle_conversion_specifier(const char **p, va_list args)
 {
-    int len = 0;
-    flags_t flags = {0};
+	int count = 0;
 
-    while (**p != '\0')
-    {
-        if (**p != '%')
-        {
-            len += _putchar(**p);
-            (*p)++;
-            continue;
-        }
+	/* Skip over the initial '%' */
+	(*p)++;
 
-        (*p)++;
-        while (**p == ' ')
-        {
-            flags.space = 1;
-            (*p)++;
-        }
+	switch (**p)
+	{
+	case 'c':
+		count += putchar(va_arg(args, int));
+		break;
+	case 's':
+		count += printf("%s", va_arg(args, char *));
+		break;
+	case '%':
+		count += putchar('%');
+		break;
+	default:
+		putchar('%');
+		putchar(**p);
+		count += 2;
+		break;
+	}
 
-        while (**p == '+' || **p == '-')
-        {
-            if (**p == '+')
-                flags.plus = 1;
-            else if (**p == '-')
-                flags.minus = 1;
-            (*p)++;
-        }
-
-        if (**p == '0')
-        {
-            flags.zero = 1;
-            (*p)++;
-        }
-
-        if (**p == '#')
-        {
-            flags.hashtag = 1;
-            (*p)++;
-        }
-
-        if (**p == '*')
-        {
-            flags.width = va_arg(args, int);
-            (*p)++;
-        }
-        else
-        {
-            flags.width = atoi(*p);
-            while (**p >= '0' && **p <= '9')
-                (*p)++;
-        }
-
-        if (**p == '.')
-        {
-            (*p)++;
-            if (**p == '*')
-            {
-                flags.precision = va_arg(args, int);
-                (*p)++;
-            }
-            else
-            {
-                flags.precision = atoi(*p);
-                while (**p >= '0' && **p <= '9')
-                    (*p)++;
-            }
-        }
-
-        if (**p == 'h' || **p == 'l')
-        {
-            if (**p == 'h')
-                flags.h++;
-            else if (**p == 'l')
-                flags.l++;
-            (*p)++;
-        }
-
-        if (**p == 'c' || **p == 's' || **p == 'd' || **p == 'i' ||
-            **p == 'b' || **p == 'u' || **p == 'o' || **p == 'x' ||
-            **p == 'X' || **p == 'S' || **p == 'p' || **p == 'r' ||
-            **p == 'R')
-        {
-            len += print_char(**p, &flags, args);
-            (*p)++;
-            break;
-        }
-
-        (*p)++;
-    }
-
-    return (len);
+	return (count);
 }
-
-
 
