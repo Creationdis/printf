@@ -23,7 +23,7 @@ typedef struct flags {
 
 int _putchar(char c);
 int _printf(const char *format, ...);
-int handle_conversion_specifier(const char **p, va_list args, flags_t *flags);
+int handle_conversion_specifier(const char **p, va_list args);
 int print_char(va_list args, flags_t *flags);
 int print_string(va_list args, flags_t *flags);
 int print_percent(va_list args, flags_t *flags);
